@@ -7,5 +7,6 @@ import KittyCats.Limits
 import KittyCats.Cartesian
 import KittyCats.Closed
 import KittyCats.Monoidal
+import KittyCats.Adjunction
 import KittyCats.Instances
 import KittyCats.Proof
