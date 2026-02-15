@@ -12,6 +12,9 @@ A Lean 4 formalization of undergraduate category theory built from first princip
 - [Monoidal](KittyCats/Monoidal.lean) - monoidal, braided, and symmetric monoidal categories
 - [Closed](KittyCats/Closed.lean) - exponential objects, cartesian closed categories
 - [Adjunction](KittyCats/Adjunction.lean) - adjunctions via unit/counit with triangle identities
+- [Dual](KittyCats/Dual.lean) - the duality principle: terminal/initial, product/coproduct, mono/epi via Op
+- [Equiv](KittyCats/Equiv.lean) - equivalence of categories, the Op involution
+- [Yoneda](KittyCats/Yoneda.lean) - presheaves, the Yoneda lemma, fully faithful embedding
 - [Instances](KittyCats/Instances.lean) - the category of types as a cartesian closed category
 - [Thm](KittyCats/Thm.lean) - naturality of pairing, diagonal absorption, and the curry/eval adjunction
 
