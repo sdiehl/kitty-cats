@@ -11,8 +11,9 @@ A Lean 4 formalization of undergraduate category theory built from first princip
 - [Cartesian](KittyCats/Cartesian.lean) - cartesian and cocartesian categories, diagonal, product maps
 - [Monoidal](KittyCats/Monoidal.lean) - monoidal, braided, and symmetric monoidal categories
 - [Closed](KittyCats/Closed.lean) - exponential objects, cartesian closed categories
+- [Adjunction](KittyCats/Adjunction.lean) - adjunctions via unit/counit with triangle identities
 - [Instances](KittyCats/Instances.lean) - the category of types as a cartesian closed category
-- [Proof](KittyCats/Proof.lean) - naturality of pairing, diagonal absorption, and the curry/eval adjunction
+- [Thm](KittyCats/Thm.lean) - naturality of pairing, diagonal absorption, and the curry/eval adjunction
 
 ## Refs
 

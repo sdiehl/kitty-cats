@@ -5,8 +5,6 @@ open Category HasProducts HasExponentials
 
 variable {C : Type u} [Category C]
 
-section Products
-
 -- Awodey, Prop 5.4
 -- Pairing is natural: precomposing into a product distributes over the components.
 -- That is, h followed by <f, g> is the same as <h then f, h then g>.
@@ -25,10 +23,6 @@ theorem diag_prodMap [Cartesian C] {a b c : C} (f : Hom a b) (g : Hom a c) :
   rw [pair_comp]
   simp [← assoc]
 
-end Products
-
-section Exponentials
-
 -- Awodey, Prop 6.1
 -- Currying the evaluation map yields the identity on the exponential object.
 -- This is the counit equation of the curry/eval adjunction: curry(eval) = id.
@@ -36,10 +30,6 @@ theorem curry_eval [HasProducts C] [HasExponentials C] {a b : C} :
     curry (eval (a := a) (b := b)) = Category.id := by
   unfold eval
   simp
-
-end Exponentials
-
-section Morphisms
 
 -- Awodey, Prop 2.2
 -- Every isomorphism is a monomorphism: if two morphisms agree after composing
@@ -63,10 +53,6 @@ theorem iso_epi {a b : C} (i : Iso a b) : Epi i.hom where
     simp [← assoc] at this
     exact this
 
-end Morphisms
-
-section Terminal
-
 -- Awodey, Def 2.9
 -- An object is terminal if every object has exactly one morphism into it.
 structure IsTerminal (t : C) where
@@ -85,5 +71,3 @@ def terminal_unique {t₁ t₂ : C} (ht₁ : IsTerminal t₁) (ht₂ : IsTermina
   -- both ht₂.to ≫ ht₁.to and id are morphisms t₁ → t₁, so they are equal by uniqueness
   hom_inv := (ht₁.unique (ht₂.to ≫ ht₁.to)).trans (ht₁.unique Category.id).symm
   inv_hom := (ht₂.unique (ht₁.to ≫ ht₂.to)).trans (ht₂.unique Category.id).symm
-
-end Terminal

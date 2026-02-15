@@ -9,4 +9,4 @@ import KittyCats.Closed
 import KittyCats.Monoidal
 import KittyCats.Adjunction
 import KittyCats.Instances
-import KittyCats.Proof
+import KittyCats.Thm
