@@ -1,6 +1,6 @@
 # KittyCats
 
-A Lean 4 formalization of undergraduate category theory built from first principles with no Mathlib.
+A Lean formalization of undergraduate category theory built from first principles with no Mathlib.
 
 - [Category](KittyCats/Category.lean) - categories, composition, identity, and the opposite category
 - [Functor](KittyCats/Functor.lean) - functors, identity functor, functor composition
@@ -11,13 +11,13 @@ A Lean 4 formalization of undergraduate category theory built from first princip
 - [Cartesian](KittyCats/Cartesian.lean) - cartesian and cocartesian categories, diagonal, product maps
 - [Monoidal](KittyCats/Monoidal.lean) - monoidal, braided, and symmetric monoidal categories
 - [Closed](KittyCats/Closed.lean) - exponential objects, cartesian closed categories
-- [Adjunction](KittyCats/Adjunction.lean) - adjunctions via unit/counit with triangle identities
-- [Monad](KittyCats/Monad.lean) - monads, Kleisli categories, and the punchline
 - [Dual](KittyCats/Dual.lean) - the duality principle: terminal/initial, product/coproduct, mono/epi via Op
 - [Equiv](KittyCats/Equiv.lean) - equivalence of categories, the Op involution
-- [Yoneda](KittyCats/Yoneda.lean) - presheaves, the Yoneda lemma, fully faithful embedding
 - [Instances](KittyCats/Instances.lean) - the category of types as a cartesian closed category
+- [Adjunction](KittyCats/Adjunction.lean) - adjunctions via unit/counit with triangle identities
+- [Monad](KittyCats/Monad.lean) - monads, Kleisli categories, monads as monoids in the category of endofunctors
 - [Thm](KittyCats/Thm.lean) - naturality of pairing, diagonal absorption, and the curry/eval adjunction
+- [Yoneda](KittyCats/Yoneda.lean) - presheaves, the Yoneda lemma, fully faithful embedding
 
 ## Refs
 
