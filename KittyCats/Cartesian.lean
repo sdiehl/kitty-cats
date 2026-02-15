@@ -1,7 +1,5 @@
 import KittyCats.Limits
 
-namespace KittyCats
-
 open Category
 
 -- Awodey, Ch 5
@@ -13,27 +11,26 @@ class Cocartesian (C : Type u) [Category C] extends HasInitial C, HasCoproducts 
 namespace Cartesian
 
 variable {C : Type u} [Category C] [Cartesian C]
+open HasProducts
 
-def diag {a : C} : Hom a (HasProducts.prod a a) :=
-  HasProducts.pair Category.id Category.id
+def diag {a : C} : Hom a (prod a a) :=
+  pair Category.id Category.id
 
-def prodMap {a b c d : C} (f : Hom a c) (g : Hom b d) :
-    Hom (HasProducts.prod a b) (HasProducts.prod c d) :=
-  HasProducts.pair (HasProducts.fst ≫ f) (HasProducts.snd ≫ g)
+def prodMap {a b c d : C} (f : Hom a c) (g : Hom b d) : Hom (prod a b) (prod c d) :=
+  pair (fst ≫ f) (snd ≫ g)
 
 end Cartesian
 
 namespace Cocartesian
 
 variable {C : Type u} [Category C] [Cocartesian C]
+open HasCoproducts
 
-def codiag {a : C} : Hom (HasCoproducts.coprod a a) a :=
-  HasCoproducts.copair Category.id Category.id
+def codiag {a : C} : Hom (coprod a a) a :=
+  copair Category.id Category.id
 
 def coprodMap {a b c d : C} (f : Hom a c) (g : Hom b d) :
-    Hom (HasCoproducts.coprod a b) (HasCoproducts.coprod c d) :=
-  HasCoproducts.copair (f ≫ HasCoproducts.inl) (g ≫ HasCoproducts.inr)
+    Hom (coprod a b) (coprod c d) :=
+  copair (f ≫ inl) (g ≫ inr)
 
 end Cocartesian
-
-end KittyCats

@@ -1,8 +1,6 @@
 import KittyCats.Closed
 import KittyCats.Product
 
-namespace KittyCats
-
 open Category
 
 instance : Category (Type u) where
@@ -36,7 +34,7 @@ instance : HasCoproducts (Type u) where
   coprod := Sum
   inl := Sum.inl
   inr := Sum.inr
-  copair f g s := match s with | .inl a => f a | .inr b => g b
+  copair := Sum.elim
   copair_inl _ _ := rfl
   copair_inr _ _ := rfl
   copair_unique _ _ _ hf hg := funext fun
@@ -53,5 +51,3 @@ instance : HasExponentials (Type u) where
 instance : Cartesian (Type u) where
 
 instance : CCC (Type u) where
-
-end KittyCats

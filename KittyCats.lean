@@ -8,3 +8,4 @@ import KittyCats.Cartesian
 import KittyCats.Closed
 import KittyCats.Monoidal
 import KittyCats.Instances
+import KittyCats.Proof

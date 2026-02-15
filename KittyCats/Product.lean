@@ -1,7 +1,5 @@
 import KittyCats.Category
 
-namespace KittyCats
-
 open Category
 
 -- Awodey, Ch 1
@@ -13,5 +11,3 @@ instance instProductCategory {C : Type u₁} {D : Type u₂}
   id_comp f := Prod.ext (instC.id_comp f.1) (instD.id_comp f.2)
   comp_id f := Prod.ext (instC.comp_id f.1) (instD.comp_id f.2)
   assoc f g h := Prod.ext (instC.assoc f.1 g.1 h.1) (instD.assoc f.2 g.2 h.2)
-
-end KittyCats

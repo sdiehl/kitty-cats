@@ -1,7 +1,5 @@
 import KittyCats.Category
 
-namespace KittyCats
-
 open Category
 
 -- Awodey, Ch 2
@@ -27,6 +25,9 @@ class HasProducts (C : Type u) [Category C] where
   pair_unique : {a b c : C} → (f : Hom c a) → (g : Hom c b) → (h : Hom c (prod a b)) →
     h ≫ fst = f → h ≫ snd = g → h = pair f g
 
+-- projections absorb pairing
+attribute [simp] HasProducts.pair_fst HasProducts.pair_snd
+
 -- Awodey, Ch 5
 class HasCoproducts (C : Type u) [Category C] where
   coprod : C → C → C
@@ -38,4 +39,5 @@ class HasCoproducts (C : Type u) [Category C] where
   copair_unique : {a b c : C} → (f : Hom a c) → (g : Hom b c) → (h : Hom (coprod a b) c) →
     inl ≫ h = f → inr ≫ h = g → h = copair f g
 
-end KittyCats
+-- injections absorb copairing
+attribute [simp] HasCoproducts.copair_inl HasCoproducts.copair_inr

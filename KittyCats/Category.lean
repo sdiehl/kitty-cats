@@ -1,5 +1,3 @@
-namespace KittyCats
-
 universe u v
 
 -- Awodey, Ch 1
@@ -12,10 +10,11 @@ class Category (Obj : Type u) where
   assoc : {a b c d : Obj} → (f : Hom a b) → (g : Hom b c) → (h : Hom c d) →
     comp (comp f g) h = comp f (comp g h)
 
+-- identity is the unit of composition
+attribute [simp] Category.id_comp Category.comp_id
+
 namespace Category
-
 scoped infixr:80 " ≫ " => Category.comp
-
 end Category
 
 -- Awodey, Ch 3
@@ -35,5 +34,3 @@ instance [inst : Category Obj] : Category (Op Obj) where
   assoc f g h := (inst.assoc h g f).symm
 
 end Op
-
-end KittyCats
