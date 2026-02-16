@@ -94,7 +94,8 @@ theorem yoneda_map_eval {C : Type u} [inst : Category.{u,v} C]
 -- at f forces each component to be determined by α_a(id).
 theorem yoneda_eval_map {C : Type u} [inst : Category.{u,v} C]
     {a b : C} (α : NatTrans (yoneda C a) (yoneda C b)) :
-    yonedaMap (α.app (Op.op a) Category.id) = α := by
+    let f := α.app (Op.op a) Category.id
+    yonedaMap f = α := by
   ext c
   funext f
   simp [yonedaMap]

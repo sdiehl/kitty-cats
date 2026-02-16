@@ -68,6 +68,9 @@ def terminal_unique {t₁ t₂ : C} (ht₁ : IsTerminal t₁) (ht₂ : IsTermina
     Iso t₁ t₂ where
   hom := ht₂.to
   inv := ht₁.to
-  -- both ht₂.to ≫ ht₁.to and id are morphisms t₁ → t₁, so they are equal by uniqueness
-  hom_inv := (ht₁.unique (ht₂.to ≫ ht₁.to)).trans (ht₁.unique Category.id).symm
-  inv_hom := (ht₂.unique (ht₁.to ≫ ht₂.to)).trans (ht₂.unique Category.id).symm
+  hom_inv :=
+    let roundtrip := ht₂.to ≫ ht₁.to
+    (ht₁.unique roundtrip).trans (ht₁.unique Category.id).symm
+  inv_hom :=
+    let roundtrip := ht₁.to ≫ ht₂.to
+    (ht₂.unique roundtrip).trans (ht₂.unique Category.id).symm
