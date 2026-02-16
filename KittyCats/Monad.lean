@@ -73,7 +73,6 @@ instance endoCat (C : Type u) [Category C] : Category (Endofunctor C) where
   comp_id α := by ext a; simp [NatTrans.vcomp, NatTrans.ident]
   assoc α β γ := by ext a; simp [NatTrans.vcomp, assoc]
 
--- Round-trip proof for identity-component NatTrans pairs.
 local macro "endo_roundtrip" : tactic =>
   `(tactic| (show NatTrans.vcomp _ _ = NatTrans.ident _
              ext a
@@ -126,6 +125,48 @@ local macro "endo_simp" : tactic =>
   `(tactic| simp [endoTensorHom, endoAssociator, endoLeftUnitor, endoRightUnitor,
                    NatTrans.vcomp, NatTrans.ident, CFunctor.compose, CFunctor.identity])
 
+private theorem endo_ext_eq {C : Type u} [Category C] {F G : Endofunctor C}
+    {α β : NatTrans F G} (h : ∀ a, α.app a = β.app a) : α = β := by
+  ext a; exact h a
+
+private theorem endoTensor_id {C : Type u} [Category C] (F G : Endofunctor C) :
+    endoTensorHom (NatTrans.ident F) (NatTrans.ident G) = NatTrans.ident _ :=
+  endo_ext_eq fun a => by simp [endoTensorHom, NatTrans.ident]
+
+private theorem endoTensor_comp {C : Type u} [Category C]
+    {F₁ F₂ F₃ G₁ G₂ G₃ : Endofunctor C}
+    (f₁ : NatTrans F₁ F₂) (f₂ : NatTrans F₂ F₃)
+    (g₁ : NatTrans G₁ G₂) (g₂ : NatTrans G₂ G₃) :
+    endoTensorHom (NatTrans.vcomp f₁ f₂) (NatTrans.vcomp g₁ g₂) =
+    NatTrans.vcomp (endoTensorHom f₁ g₁) (endoTensorHom f₂ g₂) :=
+  endo_ext_eq fun a => by
+    simp only [endoTensorHom, NatTrans.vcomp, CFunctor.compose]
+    rw [G₁.map_comp, assoc,
+        ← assoc (G₁.map (f₂.app a)) (g₁.app (F₃.obj a)) (g₂.app (F₃.obj a)),
+        g₁.naturality (f₂.app a),
+        assoc, ← assoc (G₁.map (f₁.app a))]
+
+private theorem endoPentagon {C : Type u} [Category C]
+    (F G H K : Endofunctor C) :
+    let α_FGH    := (endoAssociator F G H).hom
+    let α_F_GH_K := (endoAssociator F (CFunctor.compose G H) K).hom
+    let α_GHK    := (endoAssociator G H K).hom
+    let α_FG_HK  := (endoAssociator (CFunctor.compose F G) H K).hom
+    let α_F_GHK  := (endoAssociator F G (CFunctor.compose H K)).hom
+    NatTrans.vcomp (endoTensorHom α_FGH (NatTrans.ident K))
+      (NatTrans.vcomp α_F_GH_K (endoTensorHom (NatTrans.ident F) α_GHK)) =
+    NatTrans.vcomp α_FG_HK α_F_GHK :=
+  endo_ext_eq fun a => by endo_simp
+
+private theorem endoTriangle {C : Type u} [Category C]
+    (F G : Endofunctor C) :
+    let α  := (endoAssociator F (CFunctor.identity C) G).hom
+    let lG := (endoLeftUnitor G).hom
+    let rF := (endoRightUnitor F).hom
+    NatTrans.vcomp α (endoTensorHom (NatTrans.ident F) lG) =
+    endoTensorHom rF (NatTrans.ident G) :=
+  endo_ext_eq fun a => by endo_simp
+
 -- The endofunctor category is monoidal under composition.
 instance endoMonoidal (C : Type u) [Category C] :
     @MonoidalCategory _ (endoCat C) where
@@ -135,34 +176,32 @@ instance endoMonoidal (C : Type u) [Category C] :
   associator := endoAssociator
   leftUnitor := endoLeftUnitor
   rightUnitor := endoRightUnitor
-  tensor_id {F G} := by
-    show endoTensorHom (NatTrans.ident F) (NatTrans.ident G) = NatTrans.ident _
-    ext a
-    simp [endoTensorHom, NatTrans.ident]
-  tensor_comp {_ _ F₃ G₁ _ _} f₁ f₂ g₁ g₂ := by
-    show endoTensorHom (NatTrans.vcomp f₁ f₂) (NatTrans.vcomp g₁ g₂) =
-         NatTrans.vcomp (endoTensorHom f₁ g₁) (endoTensorHom f₂ g₂)
-    ext a
-    simp only [endoTensorHom, NatTrans.vcomp, CFunctor.compose]
-    rw [G₁.map_comp, assoc,
-        ← assoc (G₁.map (f₂.app a)) (g₁.app (F₃.obj a)) (g₂.app (F₃.obj a)),
-        g₁.naturality (f₂.app a),
-        assoc, ← assoc (G₁.map (f₁.app a))]
-  pentagon F G H K := by
-    show NatTrans.vcomp
-          (endoTensorHom (endoAssociator F G H).hom (NatTrans.ident K))
-          (NatTrans.vcomp (endoAssociator F (CFunctor.compose G H) K).hom
-            (endoTensorHom (NatTrans.ident F) (endoAssociator G H K).hom)) =
-         NatTrans.vcomp (endoAssociator (CFunctor.compose F G) H K).hom
-           (endoAssociator F G (CFunctor.compose H K)).hom
-    ext a
-    endo_simp
-  triangle F G := by
-    show NatTrans.vcomp (endoAssociator F (CFunctor.identity C) G).hom
-          (endoTensorHom (NatTrans.ident F) (endoLeftUnitor G).hom) =
-         endoTensorHom (endoRightUnitor F).hom (NatTrans.ident G)
-    ext a
-    endo_simp
+  tensor_id {F G} := endoTensor_id F G
+  tensor_comp f₁ f₂ g₁ g₂ := endoTensor_comp f₁ f₂ g₁ g₂
+  pentagon F G H K := by exact endoPentagon F G H K
+  triangle F G := by exact endoTriangle F G
+
+section MonadLift
+variable {C : Type u} [Category C] (M : CMonad C)
+
+private theorem monad_mul_assoc_endo :
+    let idT := NatTrans.ident M.T
+    let α   := (endoAssociator M.T M.T M.T).hom
+    NatTrans.vcomp (endoTensorHom M.μ idT) M.μ =
+    NatTrans.vcomp α (NatTrans.vcomp (endoTensorHom idT M.μ) M.μ) :=
+  endo_ext_eq fun a => by endo_simp; exact M.mul_assoc a
+
+private theorem monad_left_unit_endo :
+    let idT := NatTrans.ident M.T
+    NatTrans.vcomp (endoTensorHom M.η idT) M.μ = (endoLeftUnitor M.T).hom :=
+  endo_ext_eq fun a => by endo_simp; exact M.left_unit a
+
+private theorem monad_right_unit_endo :
+    let idT := NatTrans.ident M.T
+    NatTrans.vcomp (endoTensorHom idT M.η) M.μ = (endoRightUnitor M.T).hom :=
+  endo_ext_eq fun a => by endo_simp; exact M.right_unit a
+
+end MonadLift
 
 -- A monad is just a monoid in the category of endofunctors, what's the problem?
 def monadIsMonoidObj {C : Type u} [Category C] (M : CMonad C) :
@@ -170,19 +209,6 @@ def monadIsMonoidObj {C : Type u} [Category C] (M : CMonad C) :
   carrier := M.T
   mul := M.μ
   unit := M.η
-  mul_assoc := by
-    show NatTrans.vcomp (endoTensorHom M.μ (NatTrans.ident M.T)) M.μ =
-         NatTrans.vcomp (endoAssociator M.T M.T M.T).hom
-           (NatTrans.vcomp (endoTensorHom (NatTrans.ident M.T) M.μ) M.μ)
-    ext a; endo_simp
-    exact M.mul_assoc a
-  left_unit := by
-    show NatTrans.vcomp (endoTensorHom M.η (NatTrans.ident M.T)) M.μ =
-         (endoLeftUnitor M.T).hom
-    ext a; endo_simp
-    exact M.left_unit a
-  right_unit := by
-    show NatTrans.vcomp (endoTensorHom (NatTrans.ident M.T) M.η) M.μ =
-         (endoRightUnitor M.T).hom
-    ext a; endo_simp
-    exact M.right_unit a
+  mul_assoc := monad_mul_assoc_endo M
+  left_unit := monad_left_unit_endo M
+  right_unit := monad_right_unit_endo M
