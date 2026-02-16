@@ -12,7 +12,7 @@ structure Iso (a b : C) where
   hom_inv : hom ≫ inv = Category.id
   inv_hom : inv ≫ hom = Category.id
 
--- round-trip in either direction is identity
+-- $f \circ f^{-1} = \mathrm{id}$ and $f^{-1} \circ f = \mathrm{id}$
 attribute [simp] Iso.hom_inv Iso.inv_hom
 
 -- Awodey, Ch 2

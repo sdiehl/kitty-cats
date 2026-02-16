@@ -25,7 +25,7 @@ class MonoidalCategory (C : Type u) [Category C] where
     (associator a tensorUnit b).hom ≫ tensorHom Category.id (leftUnitor b).hom =
     tensorHom (rightUnitor a).hom Category.id
 
--- tensoring identities yields identity
+-- $\mathrm{id} \otimes \mathrm{id} = \mathrm{id}$
 attribute [simp] MonoidalCategory.tensor_id
 
 namespace MonoidalCategory

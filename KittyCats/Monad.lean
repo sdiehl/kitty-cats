@@ -4,8 +4,7 @@ import KittyCats.NatTrans
 open Category MonoidalCategory
 
 -- Mac Lane, Ch VI.1
--- A monad on C is an endofunctor T with unit η and multiplication μ
--- satisfying associativity and unit laws.
+-- A monad $(T, \eta, \mu)$ on C.
 structure CMonad (C : Type u) [Category C] where
   T : Endofunctor C
   η : NatTrans (CFunctor.identity C) T
@@ -15,8 +14,7 @@ structure CMonad (C : Type u) [Category C] where
   right_unit : ∀ (a : C), η.app (T.obj a) ≫ μ.app a = Category.id
 
 -- Mac Lane, Ch VI.5
--- The Kleisli category of a monad. A morphism a → b is a morphism
--- a → T(b) in C. Composition: f then g is f followed by T(g) then μ.
+-- Kleisli category. Morphisms $a \to b$ are maps $a \to T(b)$ in C.
 structure Kleisli (C : Type u) [Category C] (M : CMonad C) where
   obj : C
 
@@ -78,7 +76,7 @@ local macro "endo_roundtrip" : tactic =>
              ext a
              simp [NatTrans.vcomp, NatTrans.ident]))
 
--- Horizontal composition (Godement product) of natural transformations.
+-- Horizontal composition (Godement product).
 def endoTensorHom {C : Type u} [Category C] {F F' G G' : Endofunctor C}
     (α : NatTrans F F') (β : NatTrans G G') :
     NatTrans (CFunctor.compose F G) (CFunctor.compose F' G') where
@@ -88,9 +86,7 @@ def endoTensorHom {C : Type u} [Category C] {F F' G G' : Endofunctor C}
     rw [← assoc, ← G.map_comp, α.naturality,
         G.map_comp, assoc, β.naturality, ← assoc]
 
--- Strict coherence isomorphisms for the endofunctor category.
--- All components are identity because functor composition is
--- strictly associative and unital on objects and morphisms.
+-- Strict coherence isomorphisms (all components are identity).
 
 def endoAssociator {C : Type u} [Category C] (F G H : Endofunctor C) :
     @Iso _ (endoCat C) (CFunctor.compose (CFunctor.compose F G) H)
@@ -120,7 +116,7 @@ def endoRightUnitor {C : Type u} [Category C] (F : Endofunctor C) :
     hom_inv := by endo_roundtrip
     inv_hom := by endo_roundtrip }
 
--- Unfold the endofunctor monoidal structure to NatTrans components.
+-- Unfold endofunctor monoidal structure to NatTrans components.
 local macro "endo_simp" : tactic =>
   `(tactic| simp [endoTensorHom, endoAssociator, endoLeftUnitor, endoRightUnitor,
                    NatTrans.vcomp, NatTrans.ident, CFunctor.compose, CFunctor.identity])
@@ -167,7 +163,7 @@ private theorem endoTriangle {C : Type u} [Category C]
     endoTensorHom rF (NatTrans.ident G) :=
   endo_ext_eq fun a => by endo_simp
 
--- The endofunctor category is monoidal under composition.
+-- $(\mathrm{End}(\mathcal{C}), \circ, \mathrm{Id})$ is monoidal.
 instance endoMonoidal (C : Type u) [Category C] :
     @MonoidalCategory _ (endoCat C) where
   tensorObj F G := CFunctor.compose F G

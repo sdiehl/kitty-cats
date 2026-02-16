@@ -10,7 +10,7 @@ class Category (Obj : Type u) where
   assoc : {a b c d : Obj} → (f : Hom a b) → (g : Hom b c) → (h : Hom c d) →
     comp (comp f g) h = comp f (comp g h)
 
--- identity is the unit of composition
+-- $\mathrm{id} \circ f = f$ and $f \circ \mathrm{id} = f$
 attribute [simp] Category.id_comp Category.comp_id
 
 namespace Category

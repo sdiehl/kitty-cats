@@ -35,5 +35,5 @@ structure NatIso (F G : CFunctor C D) where
   fwd_bwd : ∀ (a : C), fwd.app a ≫ bwd.app a = Category.id
   bwd_fwd : ∀ (a : C), bwd.app a ≫ fwd.app a = Category.id
 
--- components are mutually inverse
+-- $\alpha_a \circ \beta_a = \mathrm{id}$ and $\beta_a \circ \alpha_a = \mathrm{id}$
 attribute [simp] NatIso.fwd_bwd NatIso.bwd_fwd

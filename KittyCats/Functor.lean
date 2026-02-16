@@ -12,7 +12,7 @@ structure CFunctor (C : Type u₁) (D : Type u₂) [Category C] [Category D] whe
   map_comp : {a b c : C} → (f : Hom a b) → (g : Hom b c) →
     map (f ≫ g) = map f ≫ map g
 
--- functors preserve identity and composition
+-- $F(\mathrm{id}) = \mathrm{id}$ and $F(f \circ g) = F(f) \circ F(g)$
 attribute [simp] CFunctor.map_id CFunctor.map_comp
 
 namespace CFunctor

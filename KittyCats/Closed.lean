@@ -10,7 +10,7 @@ class HasExponentials (C : Type u) [Category C] [HasProducts C] where
   curry_uncurry : {a b c : C} → (g : Hom c (exp a b)) → curry (uncurry g) = g
   uncurry_curry : {a b c : C} → (f : Hom (HasProducts.prod c a) b) → uncurry (curry f) = f
 
--- curry and uncurry witness the exponential adjunction
+-- $\mathrm{curry} \circ \mathrm{uncurry} = \mathrm{id}$ and vice versa
 attribute [simp] HasExponentials.curry_uncurry HasExponentials.uncurry_curry
 
 namespace HasExponentials
